@@ -20,9 +20,8 @@ Thumbs.db
 app.db
 *.sqlite3
 .env
-.env.*
 *.sqlite
 
-# Byte-compiled / coverage
+# Coverage / reports
 .coverage
 htmlcov/
