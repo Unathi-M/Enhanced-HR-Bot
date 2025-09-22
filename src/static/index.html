@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HUAI Solutions - HR Assistant</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #f8fafc;
+            --accent-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-xl);
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            height: fit-content;
+        }
+
+        .chat-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, var(--accent-color), #059669);
+            border-radius: 15px;
+            margin-bottom: 25px;
+            color: white;
+            font-weight: 500;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .employee-selector {
+            margin-bottom: 25px;
+        }
+
+        .employee-selector label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .employee-selector select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 16px;
+            background: white;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .employee-selector select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .quick-actions {
+            margin-bottom: 25px;
+        }
+
+        .quick-actions h3 {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 12px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .examples {
+            margin-top: 25px;
+        }
+
+        .examples h3 {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .example {
+            background: var(--secondary-color);
+            padding: 15px;
+            margin: 8px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+            font-size: 14px;
+        }
+
+        .example:hover {
+            background: #e2e8f0;
+            transform: translateX(5px);
+        }
+
+        .example.controversial {
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .example.escalation {
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: var(--secondary-color);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .message {
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            animation: slideIn 0.3s ease;
+            white-space: pre-line; /* Respect line breaks while allowing text wrapping */
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            margin-left: 20%;
+            border-bottom-right-radius: 5px;
+        }
+
+        .bot-message {
+            background: white;
+            border: 1px solid var(--border-color);
+            margin-right: 20%;
+            border-bottom-left-radius: 5px;
+            box-shadow: var(--shadow-sm);
+            white-space: pre-line; /* Respect line breaks while allowing text wrapping */
+        }
+
+        .bot-message.controversial {
+            border-left: 4px solid var(--warning-color);
+            background: #fef3c7;
+        }
+
+        .bot-message.escalation {
+            border-left: 4px solid var(--danger-color);
+            background: #fee2e2;
+        }
+
+        .input-area {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .input-area input {
+            flex: 1;
+            padding: 18px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .input-area input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .send-btn {
+            padding: 18px 25px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .metadata {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .metadata-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 20px;
+            background: white;
+            border-radius: 15px;
+            margin-right: 20%;
+            border: 1px solid var(--border-color);
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dots span {
+            width: 8px;
+            height: 8px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typing {
+            0%, 80%, 100% {
+                transform: scale(0);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .analytics-panel {
+            margin-top: 25px;
+            padding: 20px;
+            background: var(--secondary-color);
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .analytics-panel h3 {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .action-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stat-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .welcome-message {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border: 1px solid #0ea5e9;
+            border-left: 4px solid #0ea5e9;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .welcome-message h3 {
+            color: #0369a1;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-robot"></i> HUAI Solutions HR Assistant</h1>
+            <p>Advanced AI-Powered Human Resources Support System</p>
+        </div>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="status-bar">
+                    <div style="display: flex; align-items: center;">
+                        <div class="status-dot"></div>
+                        <span>System Online</span>
+                    </div>
+                    <div><i class="fas fa-shield-alt"></i> Secure</div>
+                </div>
+
+                <div class="employee-selector">
+                    <label for="employeeId"><i class="fas fa-user"></i> Select Employee:</label>
+                    <select id="employeeId">
+                        <option value="">Loading employees...</option>
+                    </select>
+                </div>
+
+                <div class="quick-actions">
+                    <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                    <div class="action-grid">
+                        <button class="action-btn" onclick="setQuery('What is my leave balance?')">
+                            <i class="fas fa-calendar-alt"></i> Leave Balance
+                        </button>
+                        <button class="action-btn" onclick="setQuery('Tell me about benefits')">
+                            <i class="fas fa-heart"></i> Benefits
+                        </button>
+                        <button class="action-btn" onclick="setQuery('Company policies')">
+                            <i class="fas fa-book"></i> Policies
+                        </button>
+                        <button class="action-btn" onclick="setQuery('How do I contact HR?')">
+                            <i class="fas fa-phone"></i> Contact HR
+                        </button>
+                    </div>
+                </div>
+
+                <div class="examples">
+                    <h3><i class="fas fa-lightbulb"></i> Try These Examples</h3>
+                    <div class="example" onclick="setQuery('What training opportunities are available?')">
+                        <i class="fas fa-graduation-cap"></i> "What training opportunities are available?"
+                    </div>
+                    <div class="example" onclick="setQuery('Tell me about performance reviews')">
+                        <i class="fas fa-chart-line"></i> "Tell me about performance reviews"
+                    </div>
+                    <div class="example controversial" onclick="setQuery('I am experiencing harassment at work')">
+                        <i class="fas fa-exclamation-triangle"></i> "I am experiencing harassment at work"
+                    </div>
+                    <div class="example escalation" onclick="setQuery('My manager threatened me')">
+                        <i class="fas fa-exclamation-circle"></i> "My manager threatened me"
+                    </div>
+                </div>
+
+                <div class="analytics-panel">
+                    <h3><i class="fas fa-chart-bar"></i> Session Analytics</h3>
+                    <div class="stat-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="queryCount">0</div>
+                            <div class="stat-label">Queries</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="responseTime">0ms</div>
+                            <div class="stat-label">Avg Response</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-section">
+                <div class="chat-container" id="chatContainer">
+                    <div class="welcome-message">
+                        <h3><i class="fas fa-hand-wave"></i> Welcome to HUAI Solutions HR Assistant!</h3>
+                        <p>I'm your intelligent HR companion, designed to help you with all your workplace questions and concerns. I can assist with policies, benefits, leave requests, and much more.</p>
+                        
+                        <div class="feature-list">
+                            <div class="feature-item">
+                                <i class="fas fa-calendar-check"></i> Leave Management
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-shield-alt"></i> Policy Information
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-heart"></i> Benefits Guide
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-exclamation-triangle"></i> Issue Reporting
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-graduation-cap"></i> Training Resources
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-phone"></i> Contact Directory
+                            </div>
+                        </div>
+                        
+                        <p style="margin-top: 15px; font-style: italic;">
+                            <i class="fas fa-info-circle"></i> 
+                            I use advanced AI to detect sensitive topics and ensure appropriate handling of all queries.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="typing-indicator" id="typingIndicator">
+                    <i class="fas fa-robot"></i>
+                    <span>HR Assistant is typing</span>
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+
+                <div class="input-area">
+                    <input type="text" id="queryInput" placeholder="Ask me anything about HR policies, benefits, leave..." onkeypress="handleKeyPress(event)">
+                    <button class="send-btn" id="sendBtn" onclick="sendQuery()">
+                        <i class="fas fa-paper-plane"></i> Send
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let queryCount = 0;
+        let totalResponseTime = 0;
+
+        // Load employees on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadEmployees();
+        });
+
+        async function loadEmployees() {
+            try {
+                const response = await fetch('/api/employees');
+                const employees = await response.json();
+                
+                const select = document.getElementById('employeeId');
+                select.innerHTML = '';
+                
+                employees.forEach(emp => {
+                    const option = document.createElement('option');
+                    option.value = emp.employee_id;
+                    option.textContent = `${emp.employee_id} - ${emp.name} (${emp.department})`;
+                    select.appendChild(option);
+                });
+                
+                // Select first employee by default
+                if (employees.length > 0) {
+                    select.value = employees[0].employee_id;
+                }
+            } catch (error) {
+                console.error('Error loading employees:', error);
+                const select = document.getElementById('employeeId');
+                select.innerHTML = '<option value="">Error loading employees</option>';
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendQuery();
+            }
+        }
+        
+        function setQuery(query) {
+            document.getElementById('queryInput').value = query;
+            document.getElementById('queryInput').focus();
+        }
+        
+        function showTypingIndicator() {
+            document.getElementById('typingIndicator').style.display = 'flex';
+            const chatContainer = document.getElementById('chatContainer');
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        function hideTypingIndicator() {
+            document.getElementById('typingIndicator').style.display = 'none';
+        }
+        
+        async function sendQuery() {
+            const query = document.getElementById('queryInput').value.trim();
+            const employeeId = document.getElementById('employeeId').value;
+            const chatContainer = document.getElementById('chatContainer');
+            const sendBtn = document.getElementById('sendBtn');
+            
+            if (!query || !employeeId) {
+                if (!employeeId) {
+                    alert('Please select an employee first.');
+                }
+                return;
+            }
+            
+            // Disable send button and show loading state
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            
+            // Add user message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message user-message';
+            userMsg.innerHTML = `<strong><i class="fas fa-user"></i> You:</strong><br>${query}`;
+            chatContainer.appendChild(userMsg);
+            
+            // Clear input
+            document.getElementById('queryInput').value = '';
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            try {
+                const startTime = Date.now();
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ employee_id: employeeId, query: query })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                const responseTime = Date.now() - startTime;
+                
+                // Hide typing indicator
+                hideTypingIndicator();
+                
+                // Create bot message
+                const botMsg = document.createElement('div');
+                botMsg.className = 'message bot-message';
+                
+                if (data.query_type === 'controversial') {
+                    botMsg.classList.add('controversial');
+                } else if (data.query_type === 'escalation_required') {
+                    botMsg.classList.add('escalation');
+                }
+                
+                // Debug: Log raw response to verify newlines
+                console.log('Raw response:', data.response);
+                
+                // Format response with proper line breaks
+                let formattedResponse = data.response.replace(/\\n/g, '<br>').replace(/\\r\\n/g, '<br>');
+                botMsg.innerHTML = `<strong><i class="fas fa-robot"></i> HR Assistant:</strong><br><br>${formattedResponse}`;
+                
+                // Add metadata for non-safe queries
+                if (data.query_type !== 'safe') {
+                    const meta = document.createElement('div');
+                    meta.className = 'metadata';
+                    
+                    const queryTypeIcon = data.query_type === 'escalation_required' ? 'fas fa-exclamation-circle' : 'fas fa-exclamation-triangle';
+                    const escalatedIcon = data.escalated ? 'fas fa-arrow-up' : 'fas fa-flag';
+                    
+                    meta.innerHTML = `
+                        <div class="metadata-item">
+                            <i class="${queryTypeIcon}"></i>
+                            <span>Type: ${data.query_type.toUpperCase()}</span>
+                        </div>
+                        <div class="metadata-item">
+                            <i class="fas fa-percentage"></i>
+                            <span>Risk: ${(data.controversy_score * 100).toFixed(0)}%</span>
+                        </div>
+                        <div class="metadata-item">
+                            <i class="fas fa-brain"></i>
+                            <span>Intent: ${data.intent}</span>
+                        </div>
+                        <div class="metadata-item">
+                            <i class="${escalatedIcon}"></i>
+                            <span>${data.escalated ? 'Escalated' : 'Flagged'}</span>
+                        </div>
+                        <div class="metadata-item">
+                            <i class="fas fa-clock"></i>
+                            <span>${responseTime}ms</span>
+                        </div>
+                    `;
+                    botMsg.appendChild(meta);
+                }
+                
+                chatContainer.appendChild(botMsg);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                
+                // Update analytics
+                queryCount++;
+                totalResponseTime += responseTime;
+                updateAnalytics();
+                
+            } catch (error) {
+                hideTypingIndicator();
+                
+                const errorMsg = document.createElement('div');
+                errorMsg.className = 'message bot-message';
+                errorMsg.style.borderLeft = '4px solid var(--danger-color)';
+                errorMsg.style.background = '#fee2e2';
+                errorMsg.innerHTML = `
+                    <strong><i class="fas fa-exclamation-triangle"></i> Connection Error:</strong><br>
+                    Unable to connect to the HR Assistant. Please check your connection and try again. (Error: ${error.message})
+                `;
+                chatContainer.appendChild(errorMsg);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                console.error('Error:', error);
+            } finally {
+                // Re-enable send button
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send';
+                document.getElementById('queryInput').focus();
+            }
+        }
+        
+        function updateAnalytics() {
+            document.getElementById('queryCount').textContent = queryCount;
+            const avgResponseTime = queryCount > 0 ? Math.round(totalResponseTime / queryCount) : 0;
+            document.getElementById('responseTime').textContent = `${avgResponseTime}ms`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+# Virtual env
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE / OS
+.vscode/
+.idea/
+*.log
+Thumbs.db
+.DS_Store
+
+# DB / secrets
+app.db
+*.sqlite3
+.env
+.env.*
+*.sqlite
+
+# Byte-compiled / coverage
+.coverage
+htmlcov/

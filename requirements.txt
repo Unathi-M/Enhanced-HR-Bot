@@ -1,0 +1,14 @@
+blinker==1.9.0
+click==8.2.1
+Flask==3.1.1
+Flask-Cors==4.0.1
+Flask-SQLAlchemy==3.1.1
+itsdangerous==2.2.0
+Jinja2==3.1.6
+joblib==1.5.2
+MarkupSafe==2.1.5
+nltk==3.9.1
+regex==2025.9.18
+SQLAlchemy==2.0.31
+tqdm==4.67.1
+Werkzeug==3.1.3
